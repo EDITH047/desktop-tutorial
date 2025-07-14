@@ -45,6 +45,24 @@ int main()
             k++;
         }
     }
+    for (int i = 0; i < n2; i++)
+    {
+        int found = 0;
+        for (int j = 0; j < n1; j++)
+        {
+            if (poly2[i][1] == poly1[j][1])
+            {
+                found = 1;
+                break;
+            }
+        }
+        if (!found)
+        {
+            poly3[k][0] = poly2[i][0];
+            poly3[k][1] = poly2[i][1];
+            k++;
+        }
+    }
     for (int i=0;i<k-1;i++)
     {
         for (int j=0;j<k-1-i;j++)
