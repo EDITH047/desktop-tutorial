@@ -28,17 +28,16 @@ int push(char temp) {
 }
 
 int isp(char temp) {
-    if ((temp == '-') || (temp == '+')) {
+    if ((temp == '-') || (temp == '+')) 
         return 2;
-    } else if ((temp == '*') || (temp == '/')) {
+    else if ((temp == '*') || (temp == '/'))
         return 5;
-    } else if (temp == '^')
+    else if (temp == '^')
         return 8;
-    else if (temp == '(') {
+    else if (temp == '(') 
         return 0;
-    } else if (temp == ')') {
+    else
         return -1;
-    }
 }
 
 int icp(char temp) {
@@ -55,7 +54,7 @@ int icp(char temp) {
     }
 }
 
-void main() {
+int main() {
     int choice;
     while (1) 
     {
@@ -106,4 +105,5 @@ void main() {
             // Additional cases and calculation logic can be implemented here
         }
     }
+    return 0;
 }
