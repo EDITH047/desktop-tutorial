@@ -1,9 +1,12 @@
 #include <stdio.h>
 #include <string.h>
 #define MAX 100
-
+char stack1[MAX];
 char stack[MAX];
+int evalStack[MAX];
+int evalTop = -1;
 int top = -1;
+int top1 = -1;
 int n;
 char arr[100];
 
@@ -26,7 +29,42 @@ int push(char temp) {
         return 0;
     }
 }
+char pop1() {
+    if (top1 == -1)
+        return '\0';
+    else {
+        char temp = stack1[top1];
+        top1--;
+        return temp;
+    }
+}
 
+int push1(char temp) {
+    if (top1 == MAX - 1)
+        return 0;
+    else {
+        top1++;
+        stack1[top1] = temp;
+        return 0;
+    }
+}
+int evalPop() {
+    if (evalTop == -1)
+        return 0;
+    else {
+        int temp = evalStack[evalTop];
+        evalTop--;
+        return temp;
+    }
+}   
+void evalPush(int temp) {
+    if (evalTop == MAX - 1) {
+        printf("Evaluation stack overflow\n");
+    } else {
+        evalTop++;
+        evalStack[evalTop] = temp;
+    }
+}
 int isp(char temp) {
     if ((temp == '-') || (temp == '+')) 
         return 2;
@@ -51,6 +89,42 @@ int icp(char temp) {
         return 10;
     } else if (temp == ')') {
         return 0;
+    } else {
+        return -1;
+    }
+}
+void postfix()
+{
+    top = -1;
+    top1 = -1; 
+    int i = 0;
+    while (arr[i] != '\0') 
+    {
+        if (('a' <= arr[i] && arr[i] <= 'z') || ('A' <= arr[i] && arr[i] <= 'Z')) 
+        {
+            push1(arr[i]);
+        } 
+        else if (arr[i] == ')')
+        {
+            char temp;
+            while ((temp=pop()) != '(') 
+            {
+                push1(temp);
+            }
+        } 
+        else
+        {
+            while (isp(stack[top]) >= icp(arr[i]) && top != -1) 
+            {
+                push1(pop());
+            }
+            push(arr[i]);
+        }
+        i++;
+    }
+    while (top != -1) 
+    {
+        push1(pop());
     }
 }
 
@@ -69,40 +143,57 @@ int main() {
         printf("Enter the equation:");
         scanf("%s", arr);
         n = strlen(arr);
+        int i = 0;
         switch (choice) 
         {
             case 1:
-                int i = 0;
-                while (arr[i] != '\0') 
+                postfix();
+                i=0;
+                printf("The postfix expression is: ");
+                while (i <= top1) 
                 {
-                    if (('a' <= arr[i] && arr[i] <= 'z') || ('A' <= arr[i] && arr[i] <= 'Z')) 
-                    {
-                        printf("%c", arr[i]);
-                    } 
-                    else if (arr[i] == ')')
-                    {
-                        char temp;
-                        while ((temp=pop()) != '(') 
-                        {
-                            printf("%c",temp);
-                        }
-                    } 
-                    else
-                    {
-                        while (isp(stack[top]) >= icp(arr[i]) && top != -1) 
-                        {
-                            printf("%c", pop());
-                        }
-                        push(arr[i]);
-                    }
+                    printf("%c", stack1[i]);
                     i++;
                 }
-                while (top != -1) 
-                {
-                    printf("%c", pop());
-                }
+                printf("\n");
                 break;
-            // Additional cases and calculation logic can be implemented here
+            case 2:
+                postfix();  // convert infix to postfix first
+                evalTop = -1;  // reset evaluation stack
+
+                for (i = 0; i <= top1; i++) {
+                    char ch = stack1[i];
+                    if (('a' <= ch && ch <= 'z') || ('A' <= ch && ch <= 'Z')) {
+                        int val;
+                        printf("Enter the value of %c: ", ch);
+                        scanf("%d", &val);
+                        evalPush(val);
+                    } else {
+                        int a = evalPop();
+                        int b = evalPop();
+                        switch (ch) {
+                            case '+': evalPush(b + a); break;
+                            case '-': evalPush(b - a); break;
+                            case '*': evalPush(b * a); break;
+                            case '/':
+                                if (a == 0) {
+                                    printf("Division by zero error.\n");
+                                    return 1;
+                                }
+                                evalPush(b / a);
+                                break;
+                            default:
+                                printf("Unknown operator %c\n", ch);
+                                return 1;
+                        }
+                    }
+                }
+
+                printf("The result is: %d\n", evalPop());
+                break;
+
+            default:
+                printf("Invalid choice, please try again.\n");
         }
     }
     return 0;
