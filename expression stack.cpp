@@ -158,8 +158,8 @@ int main() {
                 printf("\n");
                 break;
             case 2:
-                postfix();  // convert infix to postfix first
-                evalTop = -1;  // reset evaluation stack
+                postfix(); 
+                evalTop = -1;  
 
                 for (i = 0; i <= top1; i++) {
                     char ch = stack1[i];
