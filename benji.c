@@ -1,50 +1,84 @@
-void evaluation(char expr[], char result[]) {
-    convert(expr, result);
-     i=0;
-    char x = next_token(result);  
-
-    while (x != '\0') {
-        if (isdigit(x)) {
-            push(x);
-        } else {
-            int val2 = pop() - '0';
-            int val1 = pop() - '0';
-            int eval_result = 0;
-
-            switch (x) {
-                case '+':
-                    eval_result = val1 + val2;
-                    break;
-                case '-':
-                    eval_result = val1 - val2;
-                    break;
-                case '*':
-                    eval_result = val1 * val2;
-                    break;
-                case '/':
-                    if (val2 == 0) {
-                        printf("Division by zero not allowed\n");
-                        return;
-                    }
-                    eval_result = val1 / val2;
-                    break;
-                case '^': {
-                    int res = 1;
-                    for (int j = 0; j < val2; j++) {
-                        res *= val1;
-                    }
-                    eval_result = res;
-                    break;
-                }
-                default:
-                    printf("Unknown operator: %c\n", x);
-                    return;
-            }
-            push(eval_result + '0'); 
-        }
-        x = next_token(result);
+#include <stdio.h>
+#include <stdlib.h>
+struct node
+{
+    int data;
+    struct node *next;
+};
+struct node *head=NULL;
+void insertionofnode(int value)
+{
+    struct node *newnode;
+    newnode=(struct node *)malloc(sizeof(struct node));
+    if(newnode==NULL)
+    {
+        printf("No memory");
+        return;
     }
-
-    int postresult = pop() - '0';
-    printf("Result of expression = %d\n", postresult);
+    newnode->data=value;
+    newnode->next=NULL;
+    if(head==NULL)
+    {
+        head=newnode;
+    }
+    {
+        printf("No memory");
+        return;
+    }
+    newnode->data=value;
+    newnode->next=NULL;
+    if(head==NULL)
+    {
+        head=newnode;
+    }
+    else
+    {
+        struct node *temp=head;
+        while(temp->next!=NULL)
+        {
+            temp=temp->next;
+        }
+        temp->next=newnode;
+    }
 }
+void searchkey(int key)
+{
+    struct node *temp=head;
+    int flag=0;
+    while(temp!=NULL)
+    {
+        printf("%d  ",temp->data);
+        if(temp->data==key)
+        {
+            flag++;
+        }
+        temp=temp->next;
+    }
+    if(flag!=0)
+    {
+        printf("The value is found\n");
+    }
+    else
+    {
+        printf("The value is not found\n");
+    }
+}
+int main()
+{
+    int n;
+    printf("Enter the number of nodes to be entered\n");
+    scanf("%d",&n);
+    printf("Enter the elements to be entered into the nodes");
+    for(int i=0;i<n;i++)
+    {
+        int x;
+        scanf("%d",&x);
+        insertionofnode(x);
+    }
+    int key;
+    printf("Enter the value to be searched for in the list");
+    scanf("%d",&key);
+    searchkey(key);
+    return 0;
+}
+
