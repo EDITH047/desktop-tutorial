@@ -18,17 +18,9 @@ void push(int data)
     }
     else 
     {
-        if (front2 == -1) 
-        {
-            front2 = 0;
-            rear2++;
-            q2[rear2] = data;
-        } 
-        else 
-        {
-            rear2++;
-            q2[rear2] = data;
-        }
+        front2 = 0;
+        rear2 = 0;
+        q2[rear2] = data;
         while (front1 <= rear1) 
         {
             rear2++;
