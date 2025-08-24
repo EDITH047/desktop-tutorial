@@ -8,7 +8,7 @@ struct Node *head1 = NULL;
 struct Node *head2 = NULL;
 struct Node *result = NULL;
 
-void create1(int data)
+void create(struct Node **head, int data)
 {
     struct Node *temp, *newNode;
     newNode = (struct Node*)malloc(sizeof(struct Node));
@@ -19,61 +19,13 @@ void create1(int data)
     }
     newNode->data = data;
     newNode->next = NULL;
-    if (head1 == NULL)
+    if (*head == NULL)
     {
-        head1 = newNode;
+        *head = newNode;
     }
     else 
     {
-        temp = head1;
-        while (temp->next != NULL) {
-            temp = temp->next;
-        }
-        temp->next = newNode;
-    }
-}
-void create2(int data)
-{
-    struct Node *temp, *newNode;
-    newNode = (struct Node*)malloc(sizeof(struct Node));
-    if (newNode==NULL)
-    {
-        printf("Memory allocation failed.\n");
-        return;
-    }
-    newNode->data = data;
-    newNode->next = NULL;
-    if (head2 == NULL)
-    {
-        head2 = newNode;
-    }
-    else 
-    {
-        temp = head2;
-        while (temp->next != NULL) {
-            temp = temp->next;
-        }
-        temp->next = newNode;
-    }
-}
-void create3(int data)
-{
-    struct Node *temp, *newNode;
-    newNode = (struct Node*)malloc(sizeof(struct Node));
-    if (newNode==NULL)
-    {
-        printf("Memory allocation failed.\n");
-        return;
-    }
-    newNode->data = data;
-    newNode->next = NULL;
-    if (result == NULL)
-    {
-        result = newNode;
-    }
-    else 
-    {
-        temp = result;
+        temp = *head;
         while (temp->next != NULL) {
             temp = temp->next;
         }
@@ -101,7 +53,7 @@ int main()
         if (data == -1) {
             break;
         }
-        create1(data);
+        create(&head1, data);
     }
     printf("Enter the second number(Enter the digits from left to right and -1 to exit): ");
     while (1) {
@@ -109,7 +61,7 @@ int main()
         if (data == -1) {
             break;
         }
-        create2(data);
+        create(&head2, data);
     }
     reverse(&head1);
     reverse(&head2);
@@ -127,7 +79,7 @@ int main()
             ptr2 = ptr2->next;
         }
         carry = sum / 10;
-        create3(sum % 10);
+        create(&result, sum % 10);
     }
     reverse(&result);
     printf("Sum: ");
