@@ -1,7 +1,7 @@
 #include <stdio.h>  
 #define max 5
-int q1[max];
-int q2[max];
+int queue1[max];
+int queue2[max];
 int front1 = -1, rear1 = -1;
 int front2 = -1, rear2 = -1;
 void enqueue1(int data) {
@@ -12,7 +12,7 @@ void enqueue1(int data) {
         front1 = 0;
     }
     rear1++;
-    q1[rear1] = data;
+    queue1[rear1] = data;
 }
 void enqueue2(int data) {
     if (rear2 == max - 1) {
@@ -22,13 +22,13 @@ void enqueue2(int data) {
         front2 = 0;
     }
     rear2++;
-    q2[rear2] = data;
+    queue2[rear2] = data;
 }
 int dequeue1() {
     if (front1 == -1) {
         return -1;
     }
-    int data = q1[front1];
+    int data = queue1[front1];
     front1++;
     if (front1 > rear1) front1 = rear1 = -1;
     return data;
@@ -37,7 +37,7 @@ int dequeue2() {
     if (front2 == -1) {
         return -1;
     }
-    int data = q2[front2];
+    int data = queue2[front2];
     front2++;
     if (front2 > rear2) front2 = rear2 = -1;
     return data;
@@ -57,7 +57,7 @@ void push(int data)
     front1 = 0;
     rear1 = rear2;
     for (int i = 0; i <= rear2; i++) {
-        q1[i] = q2[i];
+        queue1[i] = queue2[i];
     }
     front2 = -1;
     rear2 = -1;

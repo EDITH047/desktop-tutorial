@@ -15,15 +15,17 @@ void new_webpage()
     strcpy(new_node->data, webpage);
     new_node->rptr = NULL;
     new_node->lptr = current;
+    struct Node *temp = current;
+    while (temp != NULL && temp->rptr != NULL)
+    {
+        struct Node *to_free = temp->rptr;
+        temp->rptr = NULL;
+        free(to_free);
+        temp = temp->rptr;
+    }
     if (current != NULL)
     {
-        if (current->rptr != NULL)
-        {
-            new_node->rptr = current->rptr;
-            current->rptr->lptr = new_node;
-        }
         current->rptr = new_node;
-        
     }
     current = new_node;
 }
